@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/runner/work/task-manager/task-manager/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/Infinity-task-manager.dir/main.cpp.o -c /home/runner/work/task-manager/task-manager/main.cpp",
+  "file": "/home/runner/work/task-manager/task-manager/main.cpp",
+  "output": "CMakeFiles/Infinity-task-manager.dir/main.cpp.o"
+}
+]

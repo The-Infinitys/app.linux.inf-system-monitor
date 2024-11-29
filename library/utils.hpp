@@ -1,6 +1,9 @@
 #pragma once
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
+
+#include <codecvt>
 #include <iostream>
 #include <sstream>
 
@@ -11,40 +14,28 @@ void print(std::string str) {
 
 unsigned int msleep(int millseconds) { return usleep(millseconds * 1000); }
 
-std::string exec_command(std::string cmd) {
-    FILE* fp;
-    char buf[1024];
-    std::string result = "";
-    // コマンドを指定してパイプをオープン
-    const char* cmd_char = cmd.c_str();
-    if ((fp = popen(cmd_char, "r")) == NULL) {
-        fprintf(stderr, "Failed to open pipe: argv[1]=%s", cmd_char);
-        return "";
+int count_byte(char c) {
+    if ((c & 0x80) == 0) {
+        return 1;
     }
-
-    // パイプからのコマンド実行結果を受け取り表示
-    while (fgets(buf, sizeof(buf), fp) != NULL) {
-        result += buf;
+    if ((c & 0xe0) == 0xc0) {
+        return 2;
     }
-    pclose(fp);
-    return result;
+    if ((c & 0xf0) == 0xe0) {
+        return 3;
+    }
+    return 4;
 }
 
-std::string exec_command(std::string cmd) {
-    FILE* fp;
-    char buf[1024];
-    std::string result = "";
-    // コマンドを指定してパイプをオープン
-    const char* cmd_char = cmd.c_str();
-    if ((fp = popen(cmd_char, "r")) == NULL) {
-        fprintf(stderr, "Failed to open pipe: argv[1]=%s", cmd_char);
-        return "";
+int count_str(std::string string) {
+    char* strings = (char[])string.c_str();
+    int count = 0;
+    char c = *strings;
+    while (c != '\0') {
+        count += 1;
+        strings += count_byte(c);
+        c = *strings;
     }
-
-    // パイプからのコマンド実行結果を受け取り表示
-    while (fgets(buf, sizeof(buf), fp) != NULL) {
-        result += buf;
-    }
-    pclose(fp);
-    return result;
+    return count;
 }
+// TODO: ここを治す

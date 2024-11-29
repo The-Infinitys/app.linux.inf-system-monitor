@@ -1,10 +1,11 @@
 #pragma once
 #include <vector>
+
 #include "utils.hpp"
 
 namespace terminal {
 #define MAXLINE 1024
-
+void write(std::string str) { std::cout << str << "\e[" << (count_str(str.length())) << "D"; }
 std::string cmd(std::string cmd) {
     FILE* fp;
     char buf[1024];
@@ -24,12 +25,35 @@ std::string cmd(std::string cmd) {
     return result;
 }
 
-void clear() {
-    std::cout << "\033[2J";
-    std::cout.flush();
+void clear() { std::cout << "\e[2J"; }
+void set_cursor_pos(int x, int y) {
+    std::cout << "\e[" << y << ";" << x << "H";
 }
+void move_cursor_pos(int x, int y) {
+    if (x > 0) {
+        std::cout << "\e[" << (x) << "C";
+    } else {
+        std::cout << "\e[" << (-x) << "D";
+    }
+    if (y > 0) {
+        std::cout << "\e[" << (y) << "B";
+    } else {
+        std::cout << "\e[" << (-y) << "A";
+    }
+}
+void set_cursor_line(int line) {
+    std::cout << "\e[" << (line) << ";" << (1) << "H";
+}
+void move_cursor_line(int line) {
+    if (line < 0) {
+        std::cout << "\e[" << (-line) << "F";
+    } else {
+        std::cout << "\e[" << (line) << "E";
+    }
+}
+void next_line() { move_cursor_line(1); }
 void set_txt(const std::string& text, int x, int y) {
-    std::cout << "\033[" << (y + 1) << ";" << (x + 1) << "H" << text;
+    std::cout << "\e[" << y << ";" << x << "H" << text;
 }
 void renew() { std::cout.flush(); }
 std::string color_txt(const std::string& str, const std::string& hex_color) {
@@ -40,8 +64,8 @@ std::string color_txt(const std::string& str, const std::string& hex_color) {
     g << std::stoi(hex_color.substr(3, 2), nullptr, 16);  // 緑の16進数部分
     b << std::stoi(hex_color.substr(5, 2), nullptr, 16);  // 青の16進数部分
     // 16進数カラーコードのRGB値をターミナルカラーに変換
-    return (std::string) "\033[38;2;" + r.str() + ";" + g.str() + ";" +
-           b.str() + "m" + str + "\033[0m";
+    return (std::string) "\e[38;2;" + r.str() + ";" + g.str() + ";" + b.str() +
+           "m" + str + "\e[0m";
 }
 
 std::string color_back(const std::string& str, const std::string& hex_color) {
@@ -52,8 +76,8 @@ std::string color_back(const std::string& str, const std::string& hex_color) {
     g << std::stoi(hex_color.substr(3, 2), nullptr, 16);  // 緑の16進数部分
     b << std::stoi(hex_color.substr(5, 2), nullptr, 16);  // 青の16進数部分
     // 16進数カラーコードのRGB値をターミナルカラーに変換
-    return (std::string) "\033[48;2;" + r.str() + ";" + g.str() + ";" +
-           b.str() + "m" + str + "\033[0m";
+    return (std::string) "\e[48;2;" + r.str() + ";" + g.str() + ";" + b.str() +
+           "m" + str + "\e[0m";
 }
 void draw_rect(int x, int y, int width, int height,
                const std::string& hex_color) {
