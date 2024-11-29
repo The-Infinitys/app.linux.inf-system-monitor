@@ -1,7 +1,8 @@
 [
 {
-  "directory": "/workspaces/the-infinitys-linux/github/task-manager/build",
-  "command": "/usr/bin/c++    -g   -o CMakeFiles/Infinity-task-manager.dir/main.cpp.o -c /workspaces/the-infinitys-linux/github/task-manager/main.cpp",
-  "file": "/workspaces/the-infinitys-linux/github/task-manager/main.cpp"
+  "directory": "/home/runner/work/task-manager/task-manager/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/Infinity-task-manager.dir/main.cpp.o -c /home/runner/work/task-manager/task-manager/main.cpp",
+  "file": "/home/runner/work/task-manager/task-manager/main.cpp",
+  "output": "CMakeFiles/Infinity-task-manager.dir/main.cpp.o"
 }
 ]

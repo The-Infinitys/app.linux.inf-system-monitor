@@ -6,6 +6,7 @@
 			[
 				{
 					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.5.0"
@@ -38,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "Infinity-task-manager::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-Infinity-task-manager-Debug-26ba61b8b16fdcc1cbcc.json",
+					"jsonFile" : "target-Infinity-task-manager-Debug-99e3f482967a6c6e6969.json",
 					"name" : "Infinity-task-manager",
 					"projectIndex" : 0
 				}
@@ -48,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/workspaces/the-infinitys-linux/github/task-manager/build",
-		"source" : "/workspaces/the-infinitys-linux/github/task-manager"
+		"build" : "/home/runner/work/task-manager/task-manager/build",
+		"source" : "/home/runner/work/task-manager/task-manager"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 0
+		"minor" : 7
 	}
 }

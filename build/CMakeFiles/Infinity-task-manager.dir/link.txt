@@ -1,1 +1,1 @@
-/usr/bin/c++  -g   CMakeFiles/Infinity-task-manager.dir/main.cpp.o  -o Infinity-task-manager 
+/usr/bin/g++ -g "CMakeFiles/Infinity-task-manager.dir/main.cpp.o" -o Infinity-task-manager

@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/Infinity-task-manager.dir/main.cpp.o"
+  "CMakeFiles/Infinity-task-manager.dir/main.cpp.o.d"
   "Infinity-task-manager"
   "Infinity-task-manager.pdb"
 )
