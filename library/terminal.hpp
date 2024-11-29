@@ -5,7 +5,7 @@
 
 namespace terminal {
 #define MAXLINE 1024
-void write(std::string str) { std::cout << str << "\e[" << (count_str(str.length())) << "D"; }
+void write(std::string str) { std::cout << str; }
 std::string cmd(std::string cmd) {
     FILE* fp;
     char buf[1024];
