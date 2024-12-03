@@ -21,43 +21,66 @@ std::string int_to_hex_str(int i) {
     ss << std::hex << i;
     return ss.str();
 }
+
 std::string color_hsv(double hue, double saturation, double value) {
     // HSVをRGBに変換
-    double c = value * saturation;
-    double h = hue / 60.0;
-    double x = c * (1 - abs(fmod(h, 2) - 1));
-    double m = value - c;
 
-    int r, g, b;
-    if (0 <= h && h < 1) {
-        r = c;
-        g = x;
-        b = 0;
-    } else if (1 <= h && h < 2) {
-        r = x;
-        g = c;
-        b = 0;
-    } else if (2 <= h && h < 3) {
-        r = 0;
-        g = c;
-        b = x;
-    } else if (3 <= h && h < 4) {
-        r = 0;
-        g = x;
-        b = c;
-    } else if (4 <= h && h < 5) {
-        r = x;
-        g = 0;
-        b = c;
-    } else {
-        r = c;
-        g = 0;
-        b = x;
+    struct RGB16 {
+        int red;
+        int green;
+        int blue;
+    };
+    if (saturation < 0 || saturation > 1 || value < 0 || value > 1) {
+        return {0, 0, 0};  // Return black for invalid input
     }
-    r = (int)(r * 255 + 0.5);
-    g = (int)(g * 255 + 0.5);
-    b = (int)(b * 255 + 0.5);
-
+    hue = fmodf(hue, 360.0f) / 60.0f;
+    int i = static_cast<int>(floorf(hue));
+    float f = hue - i;
+    float p = value * (1.0f - saturation);
+    float q = value * (1.0f - saturation * f);
+    float t = value * (1.0f - saturation * (1.0f - f));
+    float red, green, blue;
+    switch (i) {
+        case 0:
+            red = value;
+            green = t;
+            blue = p;
+            break;
+        case 1:
+            red = q;
+            green = value;
+            blue = p;
+            break;
+        case 2:
+            red = p;
+            green = value;
+            blue = t;
+            break;
+        case 3:
+            red = p;
+            green = q;
+            blue = value;
+            break;
+        case 4:
+            red = t;
+            green = p;
+            blue = value;
+            break;
+        default:
+            red = value;
+            green = p;
+            blue = q;
+            break;
+            // Case 5
+    }
+    RGB16 rgb_data;
+    rgb_data.red = static_cast<int>(roundf(red * 255.0f));
+    rgb_data.green = static_cast<int>(roundf(green * 255.0f));
+    rgb_data.blue = static_cast<int>(roundf(blue * 255.0f));
+    int r, g, b;
+    r = rgb_data.red;
+    g = rgb_data.green;
+    b = rgb_data.blue;
     // RGBを16進数のカラーコードに変換
     std::string color_code = "#";
     std::string r_str, g_str, b_str;

@@ -11,7 +11,7 @@ int main(int, char**) {
     terminal::clear();
     terminal::set_cursor_pos(0, 0);
     for (int i = 0; i < 360; ++i) {
-        print(color_hsv(i, 0.5, 0.5));
+        print(terminal::color_txt_hsv("Hello!",(double)i, 1, 1));
         msleep((int)(1000 / 30));
     }
     sleep(1);
