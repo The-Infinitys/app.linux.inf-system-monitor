@@ -1,3 +1,4 @@
+#include "library/app.hpp"
 #include "library/terminal.hpp"
 #include "library/utils.hpp"
 
@@ -6,14 +7,14 @@ int main(int, char**) {
     terminal::set_cursor_pos(1, 1);
     print("Hello, from Infinity-task-manager!\n");
     sleep(1);
-    terminal::clear();
-    terminal::set_txt("Hello, World!", 0, 0);
-    terminal::clear();
+    int ch;
+    std::cout << "矢印キーを押してください (ESCで終了): ";
     terminal::set_cursor_pos(0, 0);
-    for (int i = 0; i < 360; ++i) {
+    while (true) {
+        ch = keyboard::check_input();
         terminal::clear();
-        terminal::set_txt(terminal::color_txt_hsv("Hello!", (double)i, 1, 1),
-                          i % 5, 1);
+        application::program();
+        terminal::set_txt(std::to_string(ch), 0, terminal::term_size()[0]);
         terminal::renew();
         msleep((int)(1000 / 30));
     }

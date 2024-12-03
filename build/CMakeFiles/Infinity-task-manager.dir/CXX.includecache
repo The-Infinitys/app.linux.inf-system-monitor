@@ -6,6 +6,8 @@
 
 #IncludeRegexTransform: 
 
+/workspaces/the-infinitys-linux/github/task-manager/library/app.hpp
+
 /workspaces/the-infinitys-linux/github/task-manager/library/terminal.hpp
 iostream
 -
@@ -15,9 +17,15 @@ utils.hpp
 /workspaces/the-infinitys-linux/github/task-manager/library/utils.hpp
 
 /workspaces/the-infinitys-linux/github/task-manager/library/utils.hpp
+fcntl.h
+-
+signal.h
+-
 stdio.h
 -
 string.h
+-
+termios.h
 -
 unistd.h
 -
@@ -33,6 +41,8 @@ sstream
 -
 
 /workspaces/the-infinitys-linux/github/task-manager/main.cpp
+library/app.hpp
+/workspaces/the-infinitys-linux/github/task-manager/library/app.hpp
 library/terminal.hpp
 /workspaces/the-infinitys-linux/github/task-manager/library/terminal.hpp
 library/utils.hpp
