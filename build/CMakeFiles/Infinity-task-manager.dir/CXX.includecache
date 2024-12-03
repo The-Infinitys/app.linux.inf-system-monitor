@@ -7,6 +7,18 @@
 #IncludeRegexTransform: 
 
 /workspaces/the-infinitys-linux/github/task-manager/library/app.hpp
+term-gui.hpp
+/workspaces/the-infinitys-linux/github/task-manager/library/term-gui.hpp
+terminal.hpp
+/workspaces/the-infinitys-linux/github/task-manager/library/terminal.hpp
+utils.hpp
+/workspaces/the-infinitys-linux/github/task-manager/library/utils.hpp
+
+/workspaces/the-infinitys-linux/github/task-manager/library/term-gui.hpp
+terminal.hpp
+/workspaces/the-infinitys-linux/github/task-manager/library/terminal.hpp
+utils.hpp
+/workspaces/the-infinitys-linux/github/task-manager/library/utils.hpp
 
 /workspaces/the-infinitys-linux/github/task-manager/library/terminal.hpp
 iostream
