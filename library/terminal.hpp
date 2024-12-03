@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <vector>
 
 #include "utils.hpp"
@@ -56,7 +57,8 @@ void set_txt(const std::string& text, int x, int y) {
     std::cout << "\e[" << y << ";" << x << "H" << text;
 }
 void renew() { std::cout.flush(); }
-std::string color_txt(const std::string& str, const std::string& hex_color) {
+std::string color_txt_rgb(const std::string& str,
+                          const std::string& hex_color) {
     std::ostringstream r;
     std::ostringstream g;
     std::ostringstream b;
@@ -67,8 +69,12 @@ std::string color_txt(const std::string& str, const std::string& hex_color) {
     return (std::string) "\e[38;2;" + r.str() + ";" + g.str() + ";" + b.str() +
            "m" + str + "\e[0m";
 }
-
-std::string color_back(const std::string& str, const std::string& hex_color) {
+std::string color_txt_hsv(const std::string& str, double hue, double saturation,
+                          double brightness) {
+    return color_txt_rgb(str, color_hsv(hue, saturation, brightness));
+}
+std::string color_back_rgb(const std::string& str,
+                           const std::string& hex_color) {
     std::ostringstream r;
     std::ostringstream g;
     std::ostringstream b;
@@ -86,7 +92,7 @@ void draw_rect(int x, int y, int width, int height,
         emp_bar += " ";
     }
     for (int pos_y = 0; pos_y < height; pos_y++) {
-        set_txt(color_back(emp_bar, hex_color), x, y + pos_y);
+        set_txt(color_back_rgb(emp_bar, hex_color), x, y + pos_y);
     }
 }
 std::vector<int> term_size() {
