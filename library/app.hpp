@@ -39,5 +39,5 @@ void program() {
                                               title_color, 1, 1),
                       0, 0);
     draw_cpu_usage();
-
+}
 }  // namespace application
