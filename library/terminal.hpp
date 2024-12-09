@@ -101,4 +101,11 @@ std::vector<int> term_size() {
     return {terminal_width, terminal_height};
 }
 
+void draw_line(int lines, const std::string& hex_color) {
+    draw_rect(0, lines, term_size()[0], 1, hex_color);
+}
+
+void draw_col(int cols, const std::string& hex_color) {
+    draw_rect(cols, 0, 1, term_size()[0], hex_color);
+}
 }  // namespace terminal

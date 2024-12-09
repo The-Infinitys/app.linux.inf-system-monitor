@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/workspaces/the-infinitys-linux/github/task-manager/build",
-  "command": "/usr/bin/c++    -g   -o CMakeFiles/Infinity-task-manager.dir/main.cpp.o -c /workspaces/the-infinitys-linux/github/task-manager/main.cpp",
-  "file": "/workspaces/the-infinitys-linux/github/task-manager/main.cpp"
-}
-]
