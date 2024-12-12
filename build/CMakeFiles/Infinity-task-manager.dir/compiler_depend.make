@@ -3,6 +3,7 @@
 
 CMakeFiles/Infinity-task-manager.dir/main.cpp.o: /home/the-infinitys/github/task-manager/main.cpp \
   /home/the-infinitys/github/task-manager/library/app.hpp \
+  /home/the-infinitys/github/task-manager/library/manager.hpp \
   /home/the-infinitys/github/task-manager/library/term-gui.hpp \
   /home/the-infinitys/github/task-manager/library/terminal.hpp \
   /home/the-infinitys/github/task-manager/library/utils.hpp \
@@ -328,6 +329,8 @@ CMakeFiles/Infinity-task-manager.dir/main.cpp.o: /home/the-infinitys/github/task
 
 /usr/include/x86_64-linux-gnu/bits/waitflags.h:
 
+/usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
+
 /usr/include/c++/13/tr1/riemann_zeta.tcc:
 
 /usr/include/c++/13/ostream:
@@ -402,8 +405,6 @@ CMakeFiles/Infinity-task-manager.dir/main.cpp.o: /home/the-infinitys/github/task
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
 
-/usr/include/c++/13/vector:
-
 /usr/include/c++/13/cstddef:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/gthr-default.h:
@@ -444,6 +445,10 @@ CMakeFiles/Infinity-task-manager.dir/main.cpp.o: /home/the-infinitys/github/task
 
 /usr/include/c++/13/bits/stl_construct.h:
 
+/usr/include/c++/13/bits/stl_bvector.h:
+
+/usr/include/c++/13/bits/allocator.h:
+
 /usr/include/c++/13/ios:
 
 /usr/include/c++/13/bits/exception_ptr.h:
@@ -479,6 +484,16 @@ CMakeFiles/Infinity-task-manager.dir/main.cpp.o: /home/the-infinitys/github/task
 /usr/include/c++/13/bits/locale_conv.h:
 
 /usr/include/c++/13/bits/ptr_traits.h:
+
+/usr/include/c++/13/tuple:
+
+/usr/include/c++/13/bits/nested_exception.h:
+
+/usr/include/c++/13/bits/basic_ios.tcc:
+
+/usr/include/c++/13/bits/basic_ios.h:
+
+/usr/include/x86_64-linux-gnu/bits/time64.h:
 
 /home/the-infinitys/github/task-manager/main.cpp:
 
@@ -526,16 +541,6 @@ CMakeFiles/Infinity-task-manager.dir/main.cpp.o: /home/the-infinitys/github/task
 
 /usr/include/alloca.h:
 
-/usr/include/c++/13/tuple:
-
-/usr/include/c++/13/bits/nested_exception.h:
-
-/usr/include/c++/13/bits/basic_ios.tcc:
-
-/usr/include/c++/13/bits/basic_ios.h:
-
-/usr/include/x86_64-linux-gnu/bits/time64.h:
-
 /usr/include/x86_64-linux-gnu/sys/select.h:
 
 /usr/include/c++/13/cwchar:
@@ -545,16 +550,6 @@ CMakeFiles/Infinity-task-manager.dir/main.cpp.o: /home/the-infinitys/github/task
 /usr/include/c++/13/cwctype:
 
 /usr/include/c++/13/bits/sstream.tcc:
-
-/usr/include/features-time64.h:
-
-/usr/include/c++/13/bits/hash_bytes.h:
-
-/usr/include/x86_64-linux-gnu/bits/math-vector.h:
-
-/usr/include/c++/13/bits/stl_iterator_base_funcs.h:
-
-/usr/include/asm-generic/errno-base.h:
 
 /usr/include/c++/13/bits/functional_hash.h:
 
@@ -572,13 +567,31 @@ CMakeFiles/Infinity-task-manager.dir/main.cpp.o: /home/the-infinitys/github/task
 
 /usr/include/c++/13/bits/locale_facets.tcc:
 
+/usr/include/c++/13/cstdlib:
+
 /usr/include/c++/13/bits/codecvt.h:
+
+/usr/include/features-time64.h:
+
+/usr/include/c++/13/bits/stl_iterator_base_funcs.h:
+
+/usr/include/asm-generic/errno-base.h:
+
+/usr/include/c++/13/bits/hash_bytes.h:
+
+/usr/include/x86_64-linux-gnu/bits/math-vector.h:
 
 /usr/include/x86_64-linux-gnu/bits/termios-c_cflag.h:
 
 /usr/include/c++/13/bits/ios_base.h:
 
 /usr/include/c++/13/bits/ostream.tcc:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/ctype_inline.h:
+
+/usr/include/x86_64-linux-gnu/bits/signal_ext.h:
+
+/usr/include/c++/13/bits/char_traits.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
 
@@ -593,16 +606,6 @@ CMakeFiles/Infinity-task-manager.dir/main.cpp.o: /home/the-infinitys/github/task
 /usr/include/stdc-predef.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/sigval_t.h:
-
-/usr/include/c++/13/bits/allocator.h:
-
-/usr/include/c++/13/bits/stl_bvector.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/ctype_inline.h:
-
-/usr/include/c++/13/bits/char_traits.h:
-
-/usr/include/x86_64-linux-gnu/bits/signal_ext.h:
 
 /usr/include/c++/13/bits/locale_classes.tcc:
 
@@ -650,9 +653,9 @@ CMakeFiles/Infinity-task-manager.dir/main.cpp.o: /home/the-infinitys/github/task
 
 /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
 
-/usr/include/c++/13/cstdlib:
-
 /usr/include/c++/13/bits/stl_algobase.h:
+
+/usr/include/c++/13/vector:
 
 /usr/include/ctype.h:
 
@@ -703,6 +706,8 @@ CMakeFiles/Infinity-task-manager.dir/main.cpp.o: /home/the-infinitys/github/task
 /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
 
 /usr/include/termios.h:
+
+/home/the-infinitys/github/task-manager/library/manager.hpp:
 
 /usr/include/unistd.h:
 
@@ -855,5 +860,3 @@ CMakeFiles/Infinity-task-manager.dir/main.cpp.o: /home/the-infinitys/github/task
 /usr/include/x86_64-linux-gnu/bits/types/time_t.h:
 
 /usr/include/x86_64-linux-gnu/bits/typesizes.h:
-
-/usr/include/x86_64-linux-gnu/bits/unistd_ext.h:

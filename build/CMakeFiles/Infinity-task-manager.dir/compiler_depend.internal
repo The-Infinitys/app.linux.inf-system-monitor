@@ -4,6 +4,7 @@
 CMakeFiles/Infinity-task-manager.dir/main.cpp.o
  /home/the-infinitys/github/task-manager/main.cpp
  /home/the-infinitys/github/task-manager/library/app.hpp
+ /home/the-infinitys/github/task-manager/library/manager.hpp
  /home/the-infinitys/github/task-manager/library/term-gui.hpp
  /home/the-infinitys/github/task-manager/library/terminal.hpp
  /home/the-infinitys/github/task-manager/library/utils.hpp
