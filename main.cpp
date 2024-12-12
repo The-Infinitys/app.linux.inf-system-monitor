@@ -5,6 +5,12 @@
 int main(int, char**) {
     terminal::clear();
     terminal::set_cursor_pos(1, 1);
+    std::cout << manager::info().task.total << std::endl;
+    std::cout << manager::info().task.running << std::endl;
+    std::cout << manager::info().task.sleeping << std::endl;
+    std::cout << manager::info().task.stopped << std::endl;
+    std::cout << manager::info().task.zombie << std::endl;
+    sleep(1);
     print("Hello, from Infinity-task-manager!\n");
     sleep(1);
     int ch;

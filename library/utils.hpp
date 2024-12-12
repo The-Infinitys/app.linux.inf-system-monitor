@@ -117,3 +117,19 @@ std::vector<std::string> string_split(std::string str, char del) {
     }
     return result;
 }
+
+
+std::string string_between(const std::string& str, const std::string& start, const std::string& end) {
+    size_t start_pos = str.find(start);
+    if (start_pos == std::string::npos) {
+        return "";
+    }
+
+    start_pos += start.length();
+    size_t end_pos = str.find(end, start_pos);
+    if (end_pos == std::string::npos) {
+        return "";
+    }
+
+    return str.substr(start_pos, end_pos - start_pos);
+}

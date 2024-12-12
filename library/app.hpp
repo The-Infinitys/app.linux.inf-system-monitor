@@ -1,8 +1,8 @@
 #pragma once
+#include "manager.hpp"
 #include "term-gui.hpp"
 #include "terminal.hpp"
 #include "utils.hpp"
-#include "manager.hpp"
 namespace application {
 int title_color = 0;
 int term_lines = 0;
