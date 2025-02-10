@@ -1,5 +1,0 @@
-cmake_minimum_required(VERSION 3.5.0)
-project(Infinity-task-manager VERSION 0.1.0 LANGUAGES C CXX)
-
-add_executable(Infinity-task-manager main.cpp)
-
