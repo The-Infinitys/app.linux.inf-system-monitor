@@ -1,0 +1,5 @@
+#!/bin/bash
+cd /opt
+mkdir the-infinitys
+cd the-infinitys
+git clone https://github.com/The-Infinitys/task-manager.git sysmonitor
