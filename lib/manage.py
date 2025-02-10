@@ -1,5 +1,6 @@
 import subprocess
 from typing import List, NamedTuple
+import sys
 
 class TaskInfo(NamedTuple):
     total: int
@@ -9,7 +10,6 @@ class TaskInfo(NamedTuple):
     zombie: int
 
 class CpuInfo(NamedTuple):
-    name: str
     user_usage: float
     system_usage: float
     nice_usage: float
@@ -65,7 +65,7 @@ def get_task_data(s: str) -> TaskInfo:
     )
 
 def get_cpu_data(s: str) -> CpuInfo:
-    kws = ["%Cpu(s): ", " us, ", " sy, ", " ni, ", " id, ", " wa, ", " hi, ", " si, ", " st"]
+    kws = ["%Cpu(s):", "us,", "sy,", "ni,", "id,", "wa,", "hi,", "si,", "st"]
     return CpuInfo(
         float(string_between(s, kws[0], kws[1])),
         float(string_between(s, kws[1], kws[2])),
@@ -76,7 +76,8 @@ def get_cpu_data(s: str) -> CpuInfo:
         float(string_between(s, kws[6], kws[7])),
         float(string_between(s, kws[7], kws[8]))
     )
-
+def get_cpu_usage() -> float:
+    return 100 - get_cpu_data(info_txt()[2]).idle
 def get_mem_data(s: str) -> MemInfo:
     kws = ["Mem : ", " total, ", " free, ", " used, ", " buff/cache"]
     return MemInfo(
@@ -94,7 +95,9 @@ def get_swap_data(s: str) -> SwapInfo:
         float(string_between(s, kws[2], kws[3])),
         float(string_between(s, kws[3], kws[4]))
     )
-
+def get_mem_usage() -> float:
+    get_data=get_mem_data(info_txt()[3])
+    return 100 - (get_data.used + get_data.buff_cache) / get_data.total * 100
 def info() -> MachineInfo:
     info_txt_data = info_txt()
     task_info_data = get_task_data(info_txt_data[1])

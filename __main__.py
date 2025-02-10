@@ -2,7 +2,8 @@ from lib import manage
 from lib import textual
 import os, sys
 from textual.app import App, ComposeResult
-from textual.widgets import Static, Header, Footer, Button
+from textual.color import Gradient
+from textual.widgets import Static, ProgressBar, Header, Footer, Button
 
 class InfinitySystemMonitor(App):
     CSS = """
@@ -15,19 +16,27 @@ class InfinitySystemMonitor(App):
     #mem-usage{
       color: yellow;
     }
-    Static {
-    border: heavy white;
-    }
     """
-    def quit_sysmonitor(self) -> None:
-        sys.exit(0)
 
     def compose(self) -> ComposeResult:
-        # "yield Widgetのクラス"で、ターミナルにWidgetを表示する
+        rainbow_gradient = Gradient.from_colors("#ff0000","#ffff00","#00ff00","#00ffff","#0000ff","#ff00ff")
         yield Header("The Infinity's System Monitor")
+        yield Static("CPU USAGE")
         yield Static("CPU USAGE", id="cpu-usage")
+        yield ProgressBar(total=100,gradient=rainbow_gradient,id="cpu-usage-bar")
+        yield Static("MEMORY USAGE")
         yield Static("MEMORY USAGE", id="mem-usage")
         yield Footer()
+    def update(self) -> None:
+        cpu_usage = manage.get_cpu_usage()
+        mem_usage = manage.get_mem_usage()
+        self.query_one("#cpu-usage").update(f"{cpu_usage}%")
+        self.query_one("#mem-usage").update(f"{mem_usage}%")
+        self.query_one("#cpu-usage-bar").update(progress=int(manage.get_cpu_usage()))
+    def on_mount(self) -> None:
+        self.set_interval(1, self.update)
+
+
 
 if __name__ == "__main__":  
     app = InfinitySystemMonitor()
