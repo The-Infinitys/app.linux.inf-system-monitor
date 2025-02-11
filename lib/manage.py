@@ -53,7 +53,7 @@ def string_between(s: str, start: str, end: str) -> str:
     return s.split(start)[1].split(end)[0]
 
 def info_txt() -> List[str]:
-    return string_split(cmd("top -b -n 1"), '\n')
+    return string_split(cmd("top -b -n 1 -w 100"), '\n')
 
 def get_task_data(s: str) -> TaskInfo:
     return TaskInfo(
@@ -65,7 +65,7 @@ def get_task_data(s: str) -> TaskInfo:
     )
 
 def get_cpu_data(s: str) -> CpuInfo:
-    kws = ["%Cpu(s):", "us,", "sy,", "ni,", "id,", "wa,", "hi,", "si,", "st"]
+    kws = [":", "us,", "sy,", "ni,", "id,", "wa,", "hi,", "si,", "st"]
     return CpuInfo(
         float(string_between(s, kws[0], kws[1])),
         float(string_between(s, kws[1], kws[2])),
@@ -78,6 +78,23 @@ def get_cpu_data(s: str) -> CpuInfo:
     )
 def get_cpu_usage() -> float:
     return 100 - get_cpu_data(info_txt()[2]).idle
+
+def get_cpu_cores() -> int:
+    return int(cmd("grep processor /proc/cpuinfo | wc -l"))
+CPU_CORES_COUNT = get_cpu_cores()
+
+def get_cpu_core_usage(core_index) -> float:
+    if core_index >= CPU_CORES_COUNT or core_index < 0:
+        return -1
+    def info_txt_cores():
+        return string_split(cmd(f"top -1 -b -n 1 -w 100"), '\n')
+    return 100 - get_cpu_data(info_txt_cores()[2 + core_index]).idle
+def get_cpu_core_usages() -> List[float]:
+    result = []
+    for i in range(CPU_CORES_COUNT):
+        result.append( get_cpu_core_usage(i))
+    return result
+    
 def get_mem_data(s: str) -> MemInfo:
     kws = ["Mem : ", " total, ", " free, ", " used, ", " buff/cache"]
     return MemInfo(
