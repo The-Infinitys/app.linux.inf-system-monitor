@@ -5,6 +5,7 @@ from textual.binding import Binding
 from textual.app import App, ComposeResult
 # from textual.color import Gradient
 from textual.widgets import Static, Header, Footer, ProgressBar
+from textual.theme import Theme
 class InfinitySystemMonitor(App):
     CSS = """
     Screen {
@@ -23,7 +24,7 @@ class InfinitySystemMonitor(App):
       padding-left: 1;
     }
     """
-    ENABLE_COMMAND_PALETTE=False
+    # ENABLE_COMMAND_PALETTE=False
     BINDINGS = [
       ("q", "quit_app()", "Quit the application")
       ]
@@ -51,6 +52,26 @@ class InfinitySystemMonitor(App):
             os.system(f"echo {usage_bar} >> log.txt")
             self.query_one(f"#cpu-{i}-usage").update(usage_bar)
     def on_mount(self) -> None:
+        infinite_theme = Theme(
+          name="infinite",
+          primary="#999999",
+          secondary="#3333FF",
+          accent="#11FFFF",
+          foreground="#EEEEEE",
+          background="#111111",
+          success="#00FFFF",
+          warning="#FFFF00",
+          error="#FF0000",
+          surface="#9999ff",
+          panel="#333333",
+          dark=True,
+          variables={
+              "block-cursor-text-style": "none",
+              "footer-key-foreground": "#00ffff",
+          },
+        )
+        self.register_theme(infinite_theme)
+        self.theme = "infinite"
         self.set_interval(1, self.update)
     def action_quit_app(self) -> None:
         self.exit(0)
