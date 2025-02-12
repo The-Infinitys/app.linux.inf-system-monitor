@@ -49,7 +49,7 @@ class InfinitySystemMonitor(App):
             cpu_core_usage = int(10 ** round_level * core_usage[i]) / 10 ** round_level
             rounded_cpu_core_usage = int((term_width - 10) * cpu_core_usage / 100)
             usage_bar = f"[{'#' * rounded_cpu_core_usage}{'-' * (term_width - 10 - rounded_cpu_core_usage)}]"
-            os.system(f"echo {usage_bar} >> log.txt")
+            # os.system(f"echo {usage_bar} >> log.txt")
             self.query_one(f"#cpu-{i}-usage").update(usage_bar)
     def on_mount(self) -> None:
         infinite_theme = Theme(
