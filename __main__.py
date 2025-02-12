@@ -23,9 +23,9 @@ class InfinitySystemMonitor(App):
       padding-left: 1;
     }
     """
+    ENABLE_COMMAND_PALETTE=False
     BINDINGS = [
-      ("q", "quit_app()", "Quit the application"),
-      Binding("ctrl+p", "nothing()", "", show=False, priority=True)
+      ("q", "quit_app()", "Quit the application")
       ]
     def compose(self) -> ComposeResult:
         yield Header("The Infinity's System Monitor")

@@ -413,7 +413,6 @@ class App(Generic[ReturnType], DOMNode):
     To update the sub-title while the app is running, you can set the [sub_title][textual.app.App.sub_title] attribute.
     See also [the `Screen.SUB_TITLE` attribute][textual.screen.Screen.SUB_TITLE].
     """
-
     ENABLE_COMMAND_PALETTE: ClassVar[bool] = True
     """Should the [command palette][textual.command.CommandPalette] be enabled for the application?"""
 
