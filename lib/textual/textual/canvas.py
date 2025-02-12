@@ -162,7 +162,6 @@ class Canvas:
             defaultdict(lambda: (0, 0, 0, 0)) for _ in range(height)
         ]
         self.spans: list[list[_Span]] = [[] for _ in range(height)]
-
     @property
     def width(self) -> int:
         """The canvas width."""
