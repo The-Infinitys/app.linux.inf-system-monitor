@@ -8,7 +8,6 @@ from textual.app import App, ComposeResult
 from textual.color import Gradient, Color
 from textual.widgets import Static, Header, Footer, ProgressBar
 from textual.theme import Theme
-
 def Color_HSV(h,s,v):
     h=h/360
     s=s/100
@@ -46,7 +45,7 @@ class InfinitySystemMonitor(App):
     #cpu-core-usage {
       padding-left: 1;
       padding-right: 1;
-      width: 1fr;
+      overflow: hidden;
       height: """+str(manage.CPU_CORES_COUNT + 1)+""";  
     }"""
     # ENABLE_COMMAND_PALETTE=False
@@ -67,10 +66,9 @@ class InfinitySystemMonitor(App):
         mem_usage = int(10 ** round_level *manage.get_mem_usage()) / 10 ** round_level
         self.query_one("#cpu-usage").update(f"{cpu_usage}%")
         self.query_one("#mem-usage").update(f"{mem_usage}%")
-        term_width = shutil.get_terminal_size().columns
         core_usage = manage.get_cpu_core_usages()
         core_usage_canvas=self.query_one("#cpu-core-usage")
-        core_usage_canvas._width = term_width - 4
+        core_usage_canvas._width = shutil.get_terminal_size().columns - 4
         core_usage_canvas.clear()
         for i in range(manage.CPU_CORES_COUNT):
             cpu_core_usage = int(10 ** round_level * core_usage[i]) / 10 ** round_level
@@ -97,7 +95,7 @@ class InfinitySystemMonitor(App):
         )
         self.register_theme(infinite_theme)
         self.theme = "infinite"
-        self.set_interval(1, self.update)
+        self.set_interval(0.25, self.update)
         
     def action_quit_app(self) -> None:
         self.exit(0)
