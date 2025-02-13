@@ -53,7 +53,7 @@ def string_between(s: str, start: str, end: str) -> str:
     return s.split(start)[1].split(end)[0]
 
 def info_txt() -> List[str]:
-    return string_split(cmd("top -b -n 1 -w 100"), '\n')
+    return string_split(cmd("top -b -n 1 -w 512"), '\n')
 
 def get_task_data(s: str) -> TaskInfo:
     return TaskInfo(

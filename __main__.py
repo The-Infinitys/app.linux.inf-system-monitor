@@ -71,6 +71,7 @@ class InfinitySystemMonitor(App):
         # Get the machine info
         machine_info = manage.info()
         # Calculate the CPU and memory usage
+        term_width = shutil.get_terminal_size().columns
         round_level = 0
         cpu_usage = int(10 ** round_level * (100 - machine_info.cpu.idle)) / 10 ** round_level
         mem_used = int(10 ** round_level * 100 * (machine_info.memory.used/machine_info.memory.total)) / 10 ** round_level
@@ -87,7 +88,7 @@ class InfinitySystemMonitor(App):
         # Update the CPU core usage canvas
         core_usage = manage.get_cpu_core_usages()
         core_usage_canvas=self.query_one("#cpu-core-usage")
-        core_usage_canvas._width = shutil.get_terminal_size().columns - 4
+        core_usage_canvas._width = term_width - 4
         core_usage_canvas.clear()
         for i in range(manage.CPU_CORES_COUNT):
             cpu_core_usage = int(10 ** round_level * core_usage[i]) / 10 ** round_level
@@ -95,17 +96,34 @@ class InfinitySystemMonitor(App):
             core_usage_canvas.draw_line(0,i*2,resized_usage,i*2,Color_HSV(360 * i / manage.CPU_CORES_COUNT,100,100))
         # Update the memory usage canvas
         mem_usage_canvas=self.query_one("#mem-swap-usage")
-        mem_usage_canvas._width = shutil.get_terminal_size().columns - 4
+        mem_usage_canvas._width = term_width - 4
         mem_usage_canvas.clear()
-        mem_usage_data.append([mem_used,mem_buffcache,swap_used,swap_buffcache])
-        for i in range(mem_usage_canvas._width,0,-1):
-            if i < len(mem_usage_data):
-                canv_width = mem_usage_canvas._width
-                canv_height = mem_usage_canvas._height
-                draw_x = canv_width - i
+        # Update the memory usage data
+        mem_usage_data.insert(0,[mem_used,mem_buffcache])
+        swap_usage_data.insert(0,[swap_used,swap_buffcache])
+        # Remove the old data
+        if len(mem_usage_data) > mem_usage_canvas._width:
+          for i in range(len(mem_usage_data) - mem_usage_canvas._width):
+            mem_usage_data.pop()
+            swap_usage_data.pop()
+        for i in range(min(mem_usage_canvas._width, len(mem_usage_data))):
+            # Draw the memory usage data
+            canv_width = mem_usage_canvas._width
+            canv_height = mem_usage_canvas._height
+            draw_x = canv_width - i
+            draw_y_start = canv_height
+            draw_y_end = int(canv_height * (100 - mem_usage_data[i][0]) / 100)
+            mem_usage_canvas.draw_line(draw_x, draw_y_start, draw_x, draw_y_end, Color_HSV(60,100,100))
+            draw_y_start = draw_y_end
+            draw_y_end -= int(canv_height * (mem_usage_data[i][1]) / 100)
+            mem_usage_canvas.draw_line(draw_x, draw_y_start, draw_x, draw_y_end, Color_HSV(60,50,100))
+            if machine_info.swap.total != 0:
                 draw_y_start = canv_height
-                draw_y_end = canv_height * (100 - mem_usage_data[i][0]) / 100
+                draw_y_end = int(canv_height * (100 - swap_usage_data[i][0]) / 100)
                 mem_usage_canvas.draw_line(draw_x, draw_y_start, draw_x, draw_y_end, Color_HSV(0,100,100))
+                draw_y_start = draw_y_end
+                draw_y_end -= int(canv_height * (swap_usage_data[i][1]) / 100)
+                mem_usage_canvas.draw_line(draw_x, draw_y_start, draw_x, draw_y_end, Color_HSV(0,50,100))
     def on_mount(self) -> None:
         # Initialize the theme
         infinite_theme = Theme(
