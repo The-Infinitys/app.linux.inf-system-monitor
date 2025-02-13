@@ -41,6 +41,11 @@ class InfinitySystemMonitor(App):
     ProgressBar.core-usage {
       padding-left: 1;
     }
+    #mem-swap-usage {
+      padding-left: 1;
+      padding-right: 1;
+      overflow: hidden;
+    }
     """
     CSS+="""
     #cpu-core-usage {
@@ -60,20 +65,26 @@ class InfinitySystemMonitor(App):
         yield Canvas(shutil.get_terminal_size().columns - 4, 2 * manage.CPU_CORES_COUNT, Color(0, 0, 0),id="cpu-core-usage")
         yield Static("MEMORY USAGE",classes="item-title")
         yield Static("MEMORY USAGE", id="mem-usage")
+        yield Canvas(shutil.get_terminal_size().columns - 4, 20, Color(0, 0, 0),id="mem-swap-usage")
         yield Footer()
     def update(self) -> None:
+        # Get the machine info
         machine_info = manage.info()
+        # Calculate the CPU and memory usage
         round_level = 0
         cpu_usage = int(10 ** round_level * (100 - machine_info.cpu.idle)) / 10 ** round_level
         mem_used = int(10 ** round_level * 100 * (machine_info.memory.used/machine_info.memory.total)) / 10 ** round_level
         mem_buffcache = int(10 ** round_level * 100 * (machine_info.memory.buff_cache/machine_info.memory.total)) / 10 ** round_level
+        # Calculate the swap usage
         swap_used=0
         swap_buffcache=0
         if machine_info.swap.total != 0:
           swap_used = int(10 ** round_level * 100 * (machine_info.swap.used/machine_info.swap.total)) / 10 ** round_level
           swap_buffcache = int(10 ** round_level * 100 * (machine_info.swap.buff_cache/machine_info.swap.total)) / 10 ** round_level
+        # Update the UI
         self.query_one("#cpu-usage").update(f"{cpu_usage}%")
-        self.query_one("#mem-usage").update(f"{mem_used + mem_buffcache}%")
+        self.query_one("#mem-usage").update(f"{mem_used}% (buff/cache: {mem_buffcache}%)")
+        # Update the CPU core usage canvas
         core_usage = manage.get_cpu_core_usages()
         core_usage_canvas=self.query_one("#cpu-core-usage")
         core_usage_canvas._width = shutil.get_terminal_size().columns - 4
@@ -82,7 +93,21 @@ class InfinitySystemMonitor(App):
             cpu_core_usage = int(10 ** round_level * core_usage[i]) / 10 ** round_level
             resized_usage=int(core_usage_canvas._width * cpu_core_usage/100)
             core_usage_canvas.draw_line(0,i*2,resized_usage,i*2,Color_HSV(360 * i / manage.CPU_CORES_COUNT,100,100))
+        # Update the memory usage canvas
+        mem_usage_canvas=self.query_one("#mem-swap-usage")
+        mem_usage_canvas._width = shutil.get_terminal_size().columns - 4
+        mem_usage_canvas.clear()
+        mem_usage_data.append([mem_used,mem_buffcache,swap_used,swap_buffcache])
+        for i in range(mem_usage_canvas._width,0,-1):
+            if i < len(mem_usage_data):
+                canv_width = mem_usage_canvas._width
+                canv_height = mem_usage_canvas._height
+                draw_x = canv_width - i
+                draw_y_start = canv_height
+                draw_y_end = canv_height * (100 - mem_usage_data[i][0]) / 100
+                mem_usage_canvas.draw_line(draw_x, draw_y_start, draw_x, draw_y_end, Color_HSV(0,100,100))
     def on_mount(self) -> None:
+        # Initialize the theme
         infinite_theme = Theme(
           name="infinite",
           primary="#999999",
@@ -101,6 +126,7 @@ class InfinitySystemMonitor(App):
               "footer-key-foreground": "#00ffff",
           },
         )
+        # Register the theme
         self.register_theme(infinite_theme)
         self.theme = "infinite"
         self.set_interval(0.25, self.update)
@@ -111,7 +137,7 @@ class InfinitySystemMonitor(App):
         pass
 
 
-
+# Run the application
 if __name__ == "__main__":  
     app = InfinitySystemMonitor()
     app.run()
