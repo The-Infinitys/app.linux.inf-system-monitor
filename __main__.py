@@ -60,11 +60,11 @@ class InfinitySystemMonitor(App):
       ]
     def compose(self) -> ComposeResult:
         yield Header("The Infinity's System Monitor")
-        yield Static("CPU USAGE", classes="item-title")
+        yield Static("CPU", classes="item-title")
         yield Static("CPU USAGE", id="cpu-usage")
         yield Canvas(shutil.get_terminal_size().columns - 4, 2 * manage.CPU_CORES_COUNT, Color(0, 0, 0),id="cpu-core-usage")
-        yield Static("MEMORY USAGE",classes="item-title")
-        yield Static("MEMORY USAGE", id="mem-usage")
+        yield Static("MEMORY and SWAP",classes="item-title")
+        yield Static("SWAPORY USAGE", id="mem-usage")
         yield Canvas(shutil.get_terminal_size().columns - 4, 20, Color(0, 0, 0),id="mem-swap-usage")
         yield Footer()
     def update(self) -> None:
