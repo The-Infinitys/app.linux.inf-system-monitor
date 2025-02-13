@@ -1,13 +1,5 @@
-from lib import manage
-from lib import textual
-from lib import textual_canvas
-from textual_canvas import Canvas
-import os, sys, shutil
-from textual.binding import Binding
-from textual.app import App, ComposeResult
-from textual.color import Gradient, Color
-from textual.widgets import Static, Header, Footer, ProgressBar
-from textual.theme import Theme
+from importer import *
+
 def Color_HSV(h,s,v):
     h=h/360
     s=s/100
@@ -22,6 +14,8 @@ def Color_HSV(h,s,v):
     if i == 4: return Color(t, p, v)
     if i == 5: return Color(v, p, q)
 
+mem_usage_data = []
+swap_usage_data = []
 
 class InfinitySystemMonitor(App):
     CSS = """
@@ -61,11 +55,18 @@ class InfinitySystemMonitor(App):
         yield Static("MEMORY USAGE", id="mem-usage")
         yield Footer()
     def update(self) -> None:
+        machine_info = manage.info()
         round_level = 0
-        cpu_usage = int(10 ** round_level * manage.get_cpu_usage()) / 10 ** round_level
-        mem_usage = int(10 ** round_level *manage.get_mem_usage()) / 10 ** round_level
+        cpu_usage = int(10 ** round_level * (100 - machine_info.cpu.idle)) / 10 ** round_level
+        mem_used = int(10 ** round_level * 100 * (machine_info.memory.used/machine_info.memory.total)) / 10 ** round_level
+        mem_buffcache = int(10 ** round_level * 100 * (machine_info.memory.buff_cache/machine_info.memory.total)) / 10 ** round_level
+        swap_used=0
+        swap_buffcache=0
+        if machine_info.swap.total != 0:
+          swap_used = int(10 ** round_level * 100 * (machine_info.swap.used/machine_info.swap.total)) / 10 ** round_level
+          swap_buffcache = int(10 ** round_level * 100 * (machine_info.swap.buff_cache/machine_info.swap.total)) / 10 ** round_level
         self.query_one("#cpu-usage").update(f"{cpu_usage}%")
-        self.query_one("#mem-usage").update(f"{mem_usage}%")
+        self.query_one("#mem-usage").update(f"{mem_used + mem_buffcache}%")
         core_usage = manage.get_cpu_core_usages()
         core_usage_canvas=self.query_one("#cpu-core-usage")
         core_usage_canvas._width = shutil.get_terminal_size().columns - 4
