@@ -92,9 +92,11 @@ def get_cpu_core_usage(core_index) -> float:
         return string_split(gotten_data, '\n')
     return 100 - get_cpu_data(info_txt_cores()[2 + core_index]).idle
 def get_cpu_core_usages() -> List[float]:
+    gotten_data=cmd(f"top -1 -b -n 1 -w 512").replace("st   %Cpu","st\n%CPU")
+    gotten_data_list=string_split(gotten_data, '\n')
     result = []
     for i in range(CPU_CORES_COUNT):
-        result.append( get_cpu_core_usage(i))
+        result.append(100 - get_cpu_data(gotten_data_list[2+i]).idle)
     return result
     
 def get_mem_data(s: str) -> MemInfo:

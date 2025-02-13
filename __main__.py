@@ -54,7 +54,7 @@ class InfinitySystemMonitor(App):
       overflow: hidden;
       height: """+str(manage.CPU_CORES_COUNT + 1)+""";  
     }"""
-    # ENABLE_COMMAND_PALETTE=False
+    ENABLE_COMMAND_PALETTE=False
     BINDINGS = [
       ("q", "quit_app()", "Quit the application")
       ]
