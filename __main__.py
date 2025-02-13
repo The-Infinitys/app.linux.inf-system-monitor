@@ -57,7 +57,7 @@ class InfinitySystemMonitor(App):
     ENABLE_COMMAND_PALETTE=False
     BINDINGS = [
       ("q", "quit_app()", "Quit the application"),
-      ("r", "drop_cache()", "Quit the application"),
+      ("r", "drop_cache()", "Drop Cache (Free Memory)"),
       ]
     def compose(self) -> ComposeResult:
         yield Header("The Infinity's System Monitor")
