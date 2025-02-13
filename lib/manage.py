@@ -1,6 +1,6 @@
 import subprocess
 from typing import List, NamedTuple
-import sys
+import sys, os
 
 class TaskInfo(NamedTuple):
     total: int
@@ -87,7 +87,9 @@ def get_cpu_core_usage(core_index) -> float:
     if core_index >= CPU_CORES_COUNT or core_index < 0:
         return -1
     def info_txt_cores():
-        return string_split(cmd(f"top -1 -b -n 1 -w 100"), '\n')
+        gotten_data=cmd(f"top -1 -b -n 1 -w 512").replace("st   %Cpu","st\n%CPU")
+        print(gotten_data)
+        return string_split(gotten_data, '\n')
     return 100 - get_cpu_data(info_txt_cores()[2 + core_index]).idle
 def get_cpu_core_usages() -> List[float]:
     result = []

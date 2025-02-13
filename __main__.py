@@ -81,7 +81,6 @@ class InfinitySystemMonitor(App):
         swap_buffcache=0
         if machine_info.swap.total != 0:
           swap_used = int(10 ** round_level * 100 * (machine_info.swap.used/machine_info.swap.total)) / 10 ** round_level
-          swap_buffcache = int(10 ** round_level * 100 * (machine_info.swap.buff_cache/machine_info.swap.total)) / 10 ** round_level
         # Update the UI
         self.query_one("#cpu-usage").update(f"{cpu_usage}%")
         self.query_one("#mem-usage").update(f"{mem_used}% (buff/cache: {mem_buffcache}%)")
@@ -100,7 +99,7 @@ class InfinitySystemMonitor(App):
         mem_usage_canvas.clear()
         # Update the memory usage data
         mem_usage_data.insert(0,[mem_used,mem_buffcache])
-        swap_usage_data.insert(0,[swap_used,swap_buffcache])
+        swap_usage_data.insert(0,swap_used)
         # Remove the old data
         if len(mem_usage_data) > mem_usage_canvas._width:
           for i in range(len(mem_usage_data) - mem_usage_canvas._width):
@@ -119,11 +118,8 @@ class InfinitySystemMonitor(App):
             mem_usage_canvas.draw_line(draw_x, draw_y_start, draw_x, draw_y_end, Color_HSV(60,50,100))
             if machine_info.swap.total != 0:
                 draw_y_start = canv_height
-                draw_y_end = int(canv_height * (100 - swap_usage_data[i][0]) / 100)
+                draw_y_end = int(canv_height * (100 - swap_usage_data[i]) / 100)
                 mem_usage_canvas.draw_line(draw_x, draw_y_start, draw_x, draw_y_end, Color_HSV(0,100,100))
-                draw_y_start = draw_y_end
-                draw_y_end -= int(canv_height * (swap_usage_data[i][1]) / 100)
-                mem_usage_canvas.draw_line(draw_x, draw_y_start, draw_x, draw_y_end, Color_HSV(0,50,100))
     def on_mount(self) -> None:
         # Initialize the theme
         infinite_theme = Theme(
