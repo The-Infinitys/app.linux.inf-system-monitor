@@ -7,6 +7,10 @@ def Color_HSV(h,s,v):
     if s == 0.0: v*=255; return (v, v, v)
     i = int(h*6.) # XXX assume int() truncates!
     f = (h*6.)-i; p,q,t = int(255*(v*(1.-s))), int(255*(v*(1.-s*f))), int(255*(v*(1.-s*(1.-f)))); v*=255; i%=6
+    p=int(p)
+    q=int(q)
+    v=int(v)
+    t=int(t)
     if i == 0: return Color(v, t, p)
     if i == 1: return Color(q, v, p)
     if i == 2: return Color(p, v, t)
@@ -21,6 +25,9 @@ class InfinitySystemMonitor(App):
     CSS = """
     Screen {
       align: center top;
+    }
+    #cpu-usage, #mem-usage{
+      text-align: right;
     }
     #cpu-usage {
       color: red;
