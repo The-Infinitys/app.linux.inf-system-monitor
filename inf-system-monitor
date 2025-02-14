@@ -61,7 +61,7 @@ while getopts snh-: opt; do
       ;;
     --update)
       cd /opt/the-infinitys/system-monitor/
-      git pull
+      sudo git pull
       echo "Complete Upgrade"
       exit 0
       ;;
