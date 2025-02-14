@@ -1,7 +1,10 @@
 #!/bin/bash
 sudo apt update
-sudo apt install -y git sysstat python3-full
+sudo apt install -y git python3-full
 cd /opt
 mkdir the-infinitys
 cd the-infinitys
-git clone https://github.com/The-Infinitys/task-manager.git sysmonitor
+git clone https://github.com/The-Infinitys/task-manager.git system-monitor
+cd system-monitor
+sudo cp ./run-app.sh /usr/local/bin/tui-sysmonitor
+
