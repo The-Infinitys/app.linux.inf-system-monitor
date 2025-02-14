@@ -91,7 +91,7 @@ done 2>/dev/null
 # オプションをすべて削除し、引数だけ残す
 shift $((OPTIND - 1))
 # 正しい引数が指定されているか判定
-if [ $i -ne 1 ];then usage unset i; else unset i;fi
+if [ $i -ne 1 ];then error_usage unset i; else unset i;fi
 
 
 python /opt/the-infinitys/system-monitor/
