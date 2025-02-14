@@ -64,9 +64,9 @@ while getopts snh-: opt; do
       ;;
     --remove)
       echo "Try to start removing Infinity System Monitor..."
+      echo -e "Start Removing...\nDo you want to do it? [y/n]: "
       input_yesno # 関数の呼び出し
       if [ ${input_keyboard} = 'y' ]; then
-        echo -e "Start Removing...\nDo you want to do it? [y/n]: "
         /opt/the-infinitys/system-monitor/remove-inf-system-monitor
         echo "Done."
       fi
