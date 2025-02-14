@@ -20,13 +20,14 @@ def Color_HSV(h,s,v):
 
 mem_usage_data = []
 swap_usage_data = []
+network_usage_data = []
 
 class InfinitySystemMonitor(App):
     CSS = """
     Screen {
       align: center top;
     }
-    #cpu-usage, #mem-usage{
+    #cpu-usage, #mem-usage, #network-usage {
       text-align: right;
     }
     #cpu-usage {
@@ -35,6 +36,9 @@ class InfinitySystemMonitor(App):
     #mem-usage{
       color: yellow;
     }
+    #network-usage{
+      color: green;
+    }
     Static.item-title {
       border: heavy white;
     }
@@ -42,6 +46,11 @@ class InfinitySystemMonitor(App):
       padding-left: 1;
     }
     #mem-swap-usage {
+      padding-left: 1;
+      padding-right: 1;
+      overflow: hidden;
+    }
+    #network-graph {
       padding-left: 1;
       padding-right: 1;
       overflow: hidden;
@@ -60,13 +69,20 @@ class InfinitySystemMonitor(App):
       ("r", "drop_cache()", "Drop Cache (Free Memory)"),
       ]
     def compose(self) -> ComposeResult:
+        # Compose the UI
         yield Header("The Infinity's System Monitor")
+        # Create the CPU and memory usage widgets
         yield Static("CPU", classes="item-title")
         yield Static("CPU USAGE", id="cpu-usage")
         yield Canvas(shutil.get_terminal_size().columns - 4, 2 * manage.CPU_CORES_COUNT, Color(0, 0, 0),id="cpu-core-usage")
         yield Static("MEMORY and SWAP",classes="item-title")
         yield Static("SWAPORY USAGE", id="mem-usage")
         yield Canvas(shutil.get_terminal_size().columns - 4, 20, Color(0, 0, 0),id="mem-swap-usage")
+        # Create Network Usage
+        yield Static("NETWORK", classes="item-title")
+        yield Static("NETWORK USAGE", id="network-usage")
+        yield Canvas(shutil.get_terminal_size().columns - 4, 20, Color(0, 0, 0),id="network-graph")
+        # Create the footer
         yield Footer()
     def update(self) -> None:
         # Get the machine info
@@ -79,12 +95,14 @@ class InfinitySystemMonitor(App):
         mem_buffcache = int(10 ** round_level * 100 * (machine_info.memory.buff_cache/machine_info.memory.total)) / 10 ** round_level
         # Calculate the swap usage
         swap_used=0
-        swap_buffcache=0
         if machine_info.swap.total != 0:
           swap_used = int(10 ** round_level * 100 * (machine_info.swap.used/machine_info.swap.total)) / 10 ** round_level
+        # Calculate the network usage
+        network_usage = manage.get_network_usage()
         # Update the UI
         self.query_one("#cpu-usage").update(f"{cpu_usage}%")
         self.query_one("#mem-usage").update(f"{mem_used}% (buff/cache: {mem_buffcache}%)")
+        self.query_one("#network-usage").update(f"RX: {manage.byte_human_readable(network_usage[0])}/s TX: {manage.byte_human_readable(network_usage[1])}/s")
         # Update the CPU core usage canvas
         core_usage = manage.get_cpu_core_usages()
         core_usage_canvas=self.query_one("#cpu-core-usage")
@@ -103,9 +121,9 @@ class InfinitySystemMonitor(App):
         swap_usage_data.insert(0,swap_used)
         # Remove the old data
         if len(mem_usage_data) > mem_usage_canvas._width:
-          for i in range(len(mem_usage_data) - mem_usage_canvas._width):
-            mem_usage_data.pop()
-            swap_usage_data.pop()
+            for i in range(len(mem_usage_data) - mem_usage_canvas._width):
+                mem_usage_data.pop()
+                swap_usage_data.pop()
         for i in range(min(mem_usage_canvas._width, len(mem_usage_data))):
             # Draw the memory usage data
             canv_width = mem_usage_canvas._width
@@ -121,6 +139,38 @@ class InfinitySystemMonitor(App):
                 draw_y_start = canv_height
                 draw_y_end = int(canv_height * (100 - swap_usage_data[i]) / 100)
                 mem_usage_canvas.draw_line(draw_x, draw_y_start, draw_x, draw_y_end, Color_HSV(0,100,100))
+        # Update the network usage canvas
+        network_usage_data.insert(0,network_usage)
+        network_usage_canvas=self.query_one("#network-graph")
+        network_usage_canvas._width = term_width - 4
+        network_usage_canvas.clear()
+        # Remove the old data
+        if len(network_usage_data) > network_usage_canvas._width:
+            for i in range(len(network_usage_data) - network_usage_canvas._width):
+                network_usage_data.pop()
+        draw_y_start_received = 0
+        draw_y_end_received = 0
+        draw_y_start_transmitted = 0
+        draw_y_end_transmitted = 0
+        for i in range(int(min(network_usage_canvas._width / 5 + 1, len(network_usage_data)))):
+            def check_received(data):
+                return data[0]
+            def check_transmitted(data):
+                return data[1]
+            # Draw the network usage data
+            canv_width = network_usage_canvas._width
+            canv_height = network_usage_canvas._height
+            draw_x_start = canv_width - i * 5 + 5
+            draw_x_end = draw_x_start - 5
+            draw_y_start_received = draw_y_end_received
+            draw_y_end_received = int(canv_height * (1 - network_usage_data[i][0] / max(network_usage_data, key=check_received)[0]))
+            # Draw the received data
+            network_usage_canvas.draw_line(draw_x_start, draw_y_start_received, draw_x_end, draw_y_end_received, Color_HSV(120,100,100))
+            draw_y_start_transmitted = draw_y_end_transmitted
+            draw_y_end_transmitted = int(canv_height * (1 - network_usage_data[i][1] / max(network_usage_data, key=check_transmitted)[1]))
+            # Draw the transmitted data
+            network_usage_canvas.draw_line(draw_x_start, draw_y_start_transmitted, draw_x_end, draw_y_end_transmitted, Color_HSV(120,50,100))
+            
     def on_mount(self) -> None:
         # Initialize the theme
         infinite_theme = Theme(
@@ -144,7 +194,7 @@ class InfinitySystemMonitor(App):
         # Register the theme
         self.register_theme(infinite_theme)
         self.theme = "infinite"
-        self.set_interval(0.25, self.update)
+        self.set_interval(0.1, self.update)
         
     def action_drop_cache(self) -> None:
         manage.cmd('sudo sh -c "echo 1 > /proc/sys/vm/drop_caches"')

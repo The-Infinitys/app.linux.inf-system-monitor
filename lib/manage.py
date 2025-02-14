@@ -1,14 +1,29 @@
 import subprocess
 from typing import List, NamedTuple
 import sys, os
+from network import *
 
-class TaskInfo(NamedTuple):
+class TasksInfo(NamedTuple):
     total: int
     running: int
     sleeping: int
     stopped: int
     zombie: int
 
+class TaskInfo(NamedTuple):
+    pid: int
+    user: str
+    pr: int
+    ni: int
+    virt: float
+    res: float
+    shr: int
+    s: str
+    cpu: float
+    mem: float
+    time: str
+    command: str
+    
 class CpuInfo(NamedTuple):
     user_usage: float
     system_usage: float
@@ -32,7 +47,7 @@ class SwapInfo(NamedTuple):
     avail_mem: float
 
 class MachineInfo(NamedTuple):
-    task: TaskInfo
+    task: TasksInfo
     cpu: CpuInfo
     memory: MemInfo
     swap: SwapInfo
@@ -55,14 +70,40 @@ def string_between(s: str, start: str, end: str) -> str:
 def info_txt() -> List[str]:
     return string_split(cmd("top -b -n 1 -w 512"), '\n')
 
-def get_task_data(s: str) -> TaskInfo:
-    return TaskInfo(
+def get_tasks_data(s: str) -> TasksInfo:
+    return TasksInfo(
         int(string_between(s, "Tasks: ", " total, ")),
         int(string_between(s, " total, ", " running, ")),
         int(string_between(s, " running, ", " sleeping, ")),
         int(string_between(s, " sleeping, ", " stopped, ")),
         int(string_between(s, " stopped, ", " zombie"))
     )
+def get_task_data(s: str) -> TaskInfo:
+    data = [e for e in s.split(" ") if e != ""]
+    if data[4].endswith("g"):
+        data[4] = int(data[4][:-1] * 1024 ** 3)
+    else:
+        data[4] = int(data[4])
+    if data[5].endswith("g"):
+        data[5] = int(data[5][:-1] * 1024 ** 3)
+    else:
+        data[5] = int(data[5])
+    
+    return TaskInfo(
+        int(data[0]),
+        data[1],
+        int(data[2]),
+        int(data[3]),
+        data[4],
+        data[5],
+        int(data[6]),
+        data[7],
+        float(data[8]),
+        float(data[9]),
+        data[10],
+        " ".join(data[11:])
+    )
+
 
 def get_cpu_data(s: str) -> CpuInfo:
     kws = [":", "us,", "sy,", "ni,", "id,", "wa,", "hi,", "si,", "st"]
@@ -121,9 +162,9 @@ def get_mem_usage() -> float:
     return 100 - (get_data.used + get_data.buff_cache) / get_data.total * 100
 def info() -> MachineInfo:
     info_txt_data = info_txt()
-    task_info_data = get_task_data(info_txt_data[1])
+    task_info_data = get_tasks_data(info_txt_data[1])
     cpu_info_data = get_cpu_data(info_txt_data[2])
     mem_info_data = get_mem_data(info_txt_data[3])
     swap_info_data = get_swap_data(info_txt_data[4])
-    processes = info_txt_data[5:]
+    processes = info_txt_data[7:]
     return MachineInfo(task_info_data, cpu_info_data, mem_info_data, swap_info_data, processes)
