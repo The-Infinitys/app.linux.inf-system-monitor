@@ -1,0 +1,96 @@
+#!/bin/bash
+
+### Function:help&エラー出力 ###
+function show_usage {
+  cat <<EOM
+Infinity System Monitor - Simple TUI System Monitor
+Usage: $(basename "$0") [OPTION]...
+  -h/--help                Display help
+  --update                 Update Infinity System Monitor
+  --remove                 Uninstall Infinity System Monitor
+  -d/--drop-caches (1-3)   Free Memories
+    1: drop page caches
+    2: drop dentry, inode caches
+    3: drop all caches
+  $(basename "$0") [OPTION] [ARGMENT]
+
+EOM
+}
+function help_usage {
+  show_usage
+  exit 0
+}
+function error_usage {
+  show_usage
+  exit 1
+}
+
+function input_yesno()
+{
+    input_keyboard="x"
+    # y か n が入力されたらループから脱出
+    while [ ${input_keyboard} != 'y' ] && [ ${input_keyboard} != 'n' ]
+    do
+        read -p 'Do you want to do it? [y/n]: ' input_keyboard
+    done
+}
+
+### メイン処理 ###
+# i=0:処理が実行されなかった
+# i=1:処理が実行された
+i=0
+# 引数を取る指定は「-」のみ
+while getopts snh-: opt; do
+  # 処理が開始したことを確認
+  export i=1
+  # OPTIND 番目の引数を「optarg」へ代入
+  optarg="${!OPTIND}"
+  # オプションと引数の間の空白行を禁止する
+  if [ -z "$optarg" ];then usage ;fi
+  if [ ${optarg:0:1} = "-" ];then usage ;fi
+  # ロングオプション用に整形
+  [[ "$opt" = - ]] && opt="-$OPTARG"
+  # 引数を取得
+  case "-$opt" in
+    -d|--drop-caches)
+      free_level=$optarg
+      sync
+      sudo sh -c "echo $free_level > /proc/sys/vm/drop_caches"
+      echo "Droped Caches with level $free_level."
+      exit 0
+      ;;
+    --update)
+      cd /opt/the-infinitys/system-monitor/
+      git pull
+      echo "Complete Upgrade"
+      exit 0
+      ;;
+    --remove)
+      echo "Try to start removing Infinity System Monitor..."
+      input_yesno # 関数の呼び出し
+      if [ ${input_keyboard} = 'y' ]; then
+        echo -e "Start Removing..."
+        /opt/the-infinitys/system-monitor/remove-inf-system-monitor
+        echo "Done."
+      fi
+      if [ ${input_keyboard} = 'n' ]; then
+        echo -e "Canceled."
+      fi
+      exit 0
+      ;;
+    -h|--help)
+      help_usage
+      ;;
+    
+    *)
+      error_usage
+      ;;
+  esac
+done 2>/dev/null
+# オプションをすべて削除し、引数だけ残す
+shift $((OPTIND - 1))
+# 正しい引数が指定されているか判定
+if [ $i -ne 1 ];then usage unset i; else unset i;fi
+
+
+python /opt/the-infinitys/system-monitor/
