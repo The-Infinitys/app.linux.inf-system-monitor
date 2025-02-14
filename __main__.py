@@ -88,7 +88,15 @@ class InfinitySystemMonitor(App):
         # Get the machine info
         machine_info = manage.info()
         # Calculate the CPU and memory usage
-        term_width = shutil.get_terminal_size().columns
+        term_size = shutil.get_terminal_size()
+        term_width = term_size.columns
+        term_height = term_size.lines
+        graph_height = int( 2 * (term_height
+                        - 2 # the height of header and footer
+                        - 4*3 # the height of item-title and data strings
+                        - 2 # padding
+                        - manage.CPU_CORES_COUNT * 2 # the height of cpu-core-usage
+                        ) / 2)
         round_level = 0
         cpu_usage = int(10 ** round_level * (100 - machine_info.cpu.idle)) / 10 ** round_level
         mem_used = int(10 ** round_level * 100 * (machine_info.memory.used/machine_info.memory.total)) / 10 ** round_level
@@ -115,6 +123,7 @@ class InfinitySystemMonitor(App):
         # Update the memory usage canvas
         mem_usage_canvas=self.query_one("#mem-swap-usage")
         mem_usage_canvas._width = term_width - 4
+        mem_usage_canvas._height = graph_height
         mem_usage_canvas.clear()
         # Update the memory usage data
         mem_usage_data.insert(0,[mem_used,mem_buffcache])
@@ -143,6 +152,7 @@ class InfinitySystemMonitor(App):
         network_usage_data.insert(0,network_usage)
         network_usage_canvas=self.query_one("#network-graph")
         network_usage_canvas._width = term_width - 4
+        network_usage_canvas._height = graph_height
         network_usage_canvas.clear()
         # Remove the old data
         if len(network_usage_data) > network_usage_canvas._width:
