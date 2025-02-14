@@ -45,8 +45,6 @@ while getopts snh-: opt; do
   export i=1
   # OPTIND 番目の引数を「optarg」へ代入
   optarg="${!OPTIND}"
-  # オプションと引数の間の空白行を禁止する
-  if [ -z "$optarg" ];then error_usage ;fi
   if [ ${optarg:0:1} = "-" ];then error_usage ;fi
   # ロングオプション用に整形
   [[ "$opt" = - ]] && opt="-$OPTARG"
