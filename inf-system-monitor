@@ -87,6 +87,6 @@ while getopts snh-: opt; do
       exit 1
       ;;
   esac
-done 2>/dev/null
+done
 
 python /opt/the-infinitys/system-monitor/
