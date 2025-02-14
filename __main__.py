@@ -21,6 +21,7 @@ def Color_HSV(h,s,v):
 mem_usage_data = []
 swap_usage_data = []
 network_usage_data = []
+manage.get_network_usage()
 
 class InfinitySystemMonitor(App):
     CSS = """
