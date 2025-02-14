@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# Install Infinity System Monitor
+
 sudo apt update
 sudo apt install -y git python3
 cd /opt
@@ -8,3 +11,4 @@ git clone https://github.com/The-Infinitys/task-manager.git system-monitor
 cd system-monitor
 sudo cp ./run-app.sh /usr/local/bin/inf-system-monitor
 
+echo "Hello, Infinity System Monitor!"

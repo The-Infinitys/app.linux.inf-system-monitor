@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# アプリのアンインストールスクリプト
+
+# インストールされたファイルを削除
+sudo rm /usr/local/bin/inf-system-monitor
+
+# クローンしたリポジトリを削除
+sudo rm -rf /opt/the-infinitys/system-monitor
+
+# 必要に応じて、ディレクトリが空であれば親ディレクトリも削除
+if [ -z "$(ls -A /opt/the-infinitys)" ]; then
+  sudo rmdir /opt/the-infinitys
+fi
+
+echo "アプリが正常にアンインストールされました。"
