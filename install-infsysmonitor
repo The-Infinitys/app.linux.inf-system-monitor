@@ -1,6 +1,6 @@
 #!/bin/bash
 sudo apt update
-sudo apt install -y git python3-full
+sudo apt install -y git python3
 cd /opt
 mkdir the-infinitys
 cd the-infinitys
