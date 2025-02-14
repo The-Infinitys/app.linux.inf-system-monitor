@@ -31,7 +31,7 @@ function input_yesno()
     # y か n が入力されたらループから脱出
     while [ ${input_keyboard} != 'y' ] && [ ${input_keyboard} != 'n' ]
     do
-        read -p 'Do you want to do it? [y/n]: ' input_keyboard
+        read -p '' input_keyboard
     done
 }
 
@@ -69,7 +69,7 @@ while getopts snh-: opt; do
       echo "Try to start removing Infinity System Monitor..."
       input_yesno # 関数の呼び出し
       if [ ${input_keyboard} = 'y' ]; then
-        echo -e "Start Removing..."
+        echo -e "Start Removing...\nDo you want to do it? [y/n]: "
         /opt/the-infinitys/system-monitor/remove-inf-system-monitor
         echo "Done."
       fi
