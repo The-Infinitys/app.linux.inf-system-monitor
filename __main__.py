@@ -66,7 +66,6 @@ class InfinitySystemMonitor(App):
     ENABLE_COMMAND_PALETTE=False
     BINDINGS = [
       ("q", "quit_app()", "Quit the application"),
-      ("r", "drop_cache()", "Drop Cache (Free Memory)"),
       ]
     def compose(self) -> ComposeResult:
         # Compose the UI
@@ -205,9 +204,7 @@ class InfinitySystemMonitor(App):
         self.register_theme(infinite_theme)
         self.theme = "infinite"
         self.set_interval(0.1, self.update)
-        
-    def action_drop_cache(self) -> None:
-        manage.cmd('sudo sh -c "echo 1 > /proc/sys/vm/drop_caches"')
+
     def action_quit_app(self) -> None:
         self.exit(0)
     def action_nothing(self) -> None:
