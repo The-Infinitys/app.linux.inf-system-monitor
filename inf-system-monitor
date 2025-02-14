@@ -84,6 +84,7 @@ while getopts snh-: opt; do
     
     *)
       error_usage
+      exit 1
       ;;
   esac
 done 2>/dev/null
