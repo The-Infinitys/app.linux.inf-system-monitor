@@ -7,7 +7,7 @@ sudo apt install -y git python3
 cd /opt
 sudo mkdir the-infinitys
 cd the-infinitys
-sudo git clone https://github.com/The-Infinitys/task-manager.git system-monitor
+sudo git clone https://github.com/The-Infinitys/app.linux.inf-system-monitor.git system-monitor
 cd system-monitor
 sudo ln -s /opt/the-infinitys/system-monitor/inf-system-monitor /usr/local/bin/inf-system-monitor
 sudo chmod 777 /usr/local/bin/inf-system-monitor
