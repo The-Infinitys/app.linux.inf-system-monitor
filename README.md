@@ -1,8 +1,8 @@
-# Infinity Task Manager
+# Infinity System Monitor
 <img src="./inf-system-monitor.jpeg" style="height:auto;width:100%;" />
 ## Description
 
-Infinity Task Manager is a text user interface-based command line application designed to efficiently monitor the status of your computer. Although it is a command line, it is very graphical and easy to understand, and allows you to monitor the status of your machine.
+Infinity System Monitor is a text user interface-based command line application designed to efficiently monitor the status of your computer. Although it is a command line, it is very graphical and easy to understand, and allows you to monitor the status of your machine.
 
 ## Features
 
