@@ -140,14 +140,23 @@ class InfinitySystemMonitor(App):
             draw_x = canv_width - i
             draw_y_start = canv_height
             draw_y_end = int(canv_height * (100 - mem_usage_data[i][0]) / 100)
-            mem_usage_canvas.draw_line(draw_x, draw_y_start, draw_x, draw_y_end, Color_HSV(60,100,100))
+            try:
+                mem_usage_canvas.draw_line(draw_x, draw_y_start, draw_x, draw_y_end, Color_HSV(60,100,100))
+            except IndexError:
+                pass
             draw_y_start = draw_y_end
             draw_y_end -= int(canv_height * (mem_usage_data[i][1]) / 100)
-            mem_usage_canvas.draw_line(draw_x, draw_y_start, draw_x, draw_y_end, Color_HSV(60,50,100))
+            try:
+                mem_usage_canvas.draw_line(draw_x, draw_y_start, draw_x, draw_y_end, Color_HSV(60,50,100))
+            except IndexError:
+              pass
             if machine_info.swap.total != 0:
                 draw_y_start = canv_height
                 draw_y_end = int(canv_height * (100 - swap_usage_data[i]) / 100)
-                mem_usage_canvas.draw_line(draw_x, draw_y_start, draw_x, draw_y_end, Color_HSV(0,100,100))
+                try:
+                    mem_usage_canvas.draw_line(draw_x, draw_y_start, draw_x, draw_y_end, Color_HSV(0,100,100))
+                except IndexError:
+                    pass
         # Update the network usage canvas
         network_usage_data.insert(0,network_usage)
         network_usage_canvas=self.query_one("#network-graph")
@@ -175,11 +184,17 @@ class InfinitySystemMonitor(App):
             draw_y_start_received = draw_y_end_received
             draw_y_end_received = int(canv_height * (1 - network_usage_data[i][0] / max(network_usage_data, key=check_received)[0]))
             # Draw the received data
-            network_usage_canvas.draw_line(draw_x_start, draw_y_start_received, draw_x_end, draw_y_end_received, Color_HSV(120,100,100))
+            try:
+                network_usage_canvas.draw_line(draw_x_start, draw_y_start_received, draw_x_end, draw_y_end_received, Color_HSV(120,100,100))
+            except IndexError:
+                pass
             draw_y_start_transmitted = draw_y_end_transmitted
             draw_y_end_transmitted = int(canv_height * (1 - network_usage_data[i][1] / max(network_usage_data, key=check_transmitted)[1]))
             # Draw the transmitted data
-            network_usage_canvas.draw_line(draw_x_start, draw_y_start_transmitted, draw_x_end, draw_y_end_transmitted, Color_HSV(120,50,100))
+            try:
+                network_usage_canvas.draw_line(draw_x_start, draw_y_start_transmitted, draw_x_end, draw_y_end_transmitted, Color_HSV(120,50,100))
+            except IndexError:
+                pass
             
     def on_mount(self) -> None:
         # Initialize the theme
