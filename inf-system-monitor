@@ -1,5 +1,7 @@
 #!/bin/bash
 
+self_dir=$(dirname "$0");
+
 ### Function:help&エラー出力 ###
 function show_usage {
   cat <<EOM
@@ -57,7 +59,7 @@ while getopts snh-: opt; do
       exit 0
       ;;
     --update)
-      cd /opt/the-infinitys/system-monitor/
+      cd "${self_dir}"
       sudo git pull
       echo "Complete Upgrade"
       exit 0
@@ -67,7 +69,7 @@ while getopts snh-: opt; do
       echo -e "Start Removing...\nDo you want to do it? [y/n]: "
       input_yesno # 関数の呼び出し
       if [ ${input_keyboard} = 'y' ]; then
-        /opt/the-infinitys/system-monitor/remove-inf-system-monitor
+        sudo sh -c "${self_dir}/remove-inf-system-monitor"
         echo "Done."
       fi
       if [ ${input_keyboard} = 'n' ]; then
@@ -86,4 +88,6 @@ while getopts snh-: opt; do
   esac
 done
 
-python /opt/the-infinitys/system-monitor/
+# 自分自身のディレクトリ
+
+python "${self_dir}"
