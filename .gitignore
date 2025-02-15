@@ -1,2 +1,2 @@
-__pycache__
-lib/__pycache__
+#Ignore all pycache
+**/__pycache__/**
