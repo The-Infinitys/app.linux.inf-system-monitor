@@ -59,7 +59,7 @@ while getopts snh-: opt; do
       exit 0
       ;;
     --update)
-      cd "$/opt/the-infinitys/system-monitor/"
+      cd "/opt/the-infinitys/system-monitor/"
       sudo git pull
       echo "Complete Upgrade"
       exit 0
@@ -69,7 +69,7 @@ while getopts snh-: opt; do
       echo -e "Start Removing...\nDo you want to do it? [y/n]: "
       input_yesno # 関数の呼び出し
       if [ ${input_keyboard} = 'y' ]; then
-        sudo sh -c "$/opt/theinfinitys/system-monitor/remove-inf-system-monitor"
+        sudo sh -c "/opt/the-infinitys/system-monitor/remove-inf-system-monitor"
         echo "Done."
       fi
       if [ ${input_keyboard} = 'n' ]; then
